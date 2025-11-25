@@ -11,5 +11,6 @@ add_test(
 add_test(
     NAME "mini.string"
     COMMAND ${CMAKE_COMMAND}
+        -D CMAKE_MODULE_PATH=${CMAKE_CURRENT_SOURCE_DIR}\;${CMAKE_SOURCE_DIR}/src
         -P ${CMAKE_CURRENT_SOURCE_DIR}/test_mini.string.cmake
 )

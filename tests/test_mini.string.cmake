@@ -1,6 +1,6 @@
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/../src)
-
 include(testing NO_POLICY_SCOPE)
+
+# include module under test
 include(mini.string)
 
 testsuite("mini.string tests")
