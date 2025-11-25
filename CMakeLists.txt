@@ -1,43 +1,29 @@
 cmake_minimum_required(VERSION 3.15)
 project("mini.cmake" VERSION 1.0.0 LANGUAGES NONE)
 
-# Use LANGUAGES NONE since there's no code to compile
-# Set where to install the modules
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-enable_testing()
-add_subdirectory(tests)
+option(MINI_CMAKE_ENABLE_TESTS "Configure unit test for 'mini.cmake'." ON)
+
+if(MINI_CMAKE_ENABLE_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
 file(GLOB modules CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cmake)
 
-# Install the CMake modules
-install(
-    FILES
-        ${modules}
-    DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
-)
-
-# Generate the config file
-configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/config.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
-)
-
-# Generate version file
+set(version_file ${PROJECT_NAME}-config-version.cmake)
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+    ${CMAKE_BINARY_DIR}/${version_file}
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
-# Install the config files
 install(
     FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+        ${modules}
+        ${CMAKE_BINARY_DIR}/${version_file}
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
 )
